@@ -1,10 +1,10 @@
 // import React, {useState, useCallback} from "react";
 import './App.module.css';
 
-// import Playlist from "../Playlist/Playlist";
+import Playlist from "../Playlist/Playlist";
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
-// import Spotify from "../../util/Spotify";
+
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <SearchBar/>
         <div className="App-playlist">
           <SearchResults/>
-          {/* <Playlist/> */}
+          <Playlist/>
         </div>
       </div>
     </div>
