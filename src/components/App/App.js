@@ -3,7 +3,7 @@ import './App.module.css';
 
 // import Playlist from "../Playlist/Playlist";
 import SearchBar from "../SearchBar/SearchBar";
-// import SearchResults from "../SearchResults/SearchResults";
+import SearchResults from "../SearchResults/SearchResults";
 // import Spotify from "../../util/Spotify";
 
 function App() {
@@ -14,10 +14,10 @@ function App() {
       </h1>
       <div className="App">
         <SearchBar/>
-        {/* <div className="App-playlist">
+        <div className="App-playlist">
           <SearchResults/>
-          <Playlist/>
-        </div> */}
+          {/* <Playlist/> */}
+        </div>
       </div>
     </div>
   );
