@@ -1,10 +1,10 @@
 // import React, { useCallback } from "react";
-import "./Track.module.css";
+import styles from "./Track.module.css";
 
 function Track() {
     return (
-        <div className="Track">
-          <div className="Track-information">
+        <div className={styles.Track}>
+          <div className={styles.TrackInformation}>
             <h3>Temp TrackName</h3>
             <p>
               Temp Artist| Temp Album
