@@ -1,13 +1,13 @@
 // import React, { useCallback } from "react";
-import './Playlist.module.css';
+import styles from './Playlist.module.css';
 import TrackList from "../Tracklist/Tracklist";
 
 function Playlist() {
     return (
-        <div className="Playlist">
+        <div className={styles.Playlist}>
           <input/>
           <TrackList/>
-          <button className="Playlist-save">
+          <button className={styles.PlaylistSave}>
             SAVE TO SPOTIFY
           </button>
         </div>
