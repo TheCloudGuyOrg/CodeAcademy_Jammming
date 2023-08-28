@@ -1,10 +1,10 @@
 import React from "react";
-import './Tracklist.module.css';
+import styles from './Tracklist.module.css';
 // import Track from "../Track/Track";
 
 function Tracklist() {
     return (
-        <div className="TrackList">
+        <div className={styles.TrackList}>
         </div>
       );
 };
