@@ -1,11 +1,11 @@
 //import React, { useState, useCallback } from "react";
-import './SearchBar.module.css';
+import styles from './SearchBar.module.css';
 
 function SearchBar() {
     return (
-        <div className="SearchBar">
+        <div className={styles.SearchBar}>
           <input placeholder="Enter A Song Title"/>
-          <button className="SearchButton">
+          <button className={styles.SearchButton}>
             SEARCH
           </button>
         </div>
