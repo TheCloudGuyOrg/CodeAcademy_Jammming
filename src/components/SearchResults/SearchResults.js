@@ -1,9 +1,9 @@
 import React from "react";
-import './SearchResults.module.css';
+import styles from './SearchResults.module.css';
 
 function SearchResults() {
     return (
-        <div className="SearchResults">
+        <div className={styles.SearchResults}>
           <h2>Results</h2>
         </div>
       );
