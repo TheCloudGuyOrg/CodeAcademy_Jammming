@@ -6,13 +6,20 @@ import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import Spotify from "../../util/Spotify";
 
+const sampleTracks = Spotify.search();
+
 const App = () => {
+  // Defining Spotify search state
   const [searchResults, setSearchResults] = useState([]);
 
   const search = useCallback((term) => {
-    setSearchResults(Spotify.search(term))
+    setSearchResults(sampleTracks)
   }, []);
 
+  // Defining playlist tracks state
+  // eslint-disable-next-line
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+  
   return (
     <div>
       <h1>
@@ -27,6 +34,7 @@ const App = () => {
             searchResults={searchResults}
           />
           <Playlist
+            playlistTracks={playlistTracks}
           />
         </div>
       </div>
