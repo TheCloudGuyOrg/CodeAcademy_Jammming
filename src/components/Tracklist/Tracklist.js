@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './Tracklist.module.css';
+import styles from "./Tracklist.module.css";
 import Track from "../Track/Track";
 
 const Tracklist = (props) => {
@@ -10,9 +10,6 @@ const Tracklist = (props) => {
             <Track
               track={track}
               key={track.id}
-              onAdd={props.onAdd}
-              isRemoval={props.isREmoval}
-              onRemove={props.onRemove}
             />
           );
         })}

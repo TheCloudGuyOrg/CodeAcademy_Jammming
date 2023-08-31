@@ -1,12 +1,12 @@
 // import React, { useCallback } from "react";
-import styles from './Playlist.module.css';
-import TrackList from "../Tracklist/Tracklist";
+import styles from "./Playlist.module.css";
+//import TrackList from "../Tracklist/Tracklist";
 
-function Playlist() {
+const Playlist = () => {
     return (
         <div className={styles.Playlist}>
           <input/>
-          <TrackList/>
+          {/* <TrackList/> */}
           <button className={styles.PlaylistSave}>
             SAVE TO SPOTIFY
           </button>
