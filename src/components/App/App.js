@@ -34,6 +34,13 @@ const App = () => {
       prevTracks.filter((currentTrack) => currentTrack.id !== track.id)
     );
   }, []);
+
+  // Defining Playlist Name
+  const [playlistName, setPlaylistName] = useState("New Playlist");
+  
+  const updatePlaylistName = useCallback((name) => {
+    setPlaylistName(name);
+  }, [])
   
   return (
     <div>
@@ -50,8 +57,10 @@ const App = () => {
             onAdd={addTrack}
           />
           <Playlist
+            playlistName={playlistName}
             playlistTracks={playlistTracks}
             onRemove={removeTrack}
+            onNameChange={updatePlaylistName}
           />
         </div>
       </div>
