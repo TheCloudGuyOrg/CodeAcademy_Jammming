@@ -17,8 +17,17 @@ const App = () => {
   }, []);
 
   // Defining playlist tracks state
-  // eslint-disable-next-line
   const [playlistTracks, setPlaylistTracks] = useState([]);
+
+  const addTrack = useCallback(
+    (track) => {
+      if (playlistTracks.some((savedTrack) => savedTrack.id === track.id))
+        return;
+
+      setPlaylistTracks((prevTracks) => [...prevTracks, track]);
+    },
+    [playlistTracks]
+  )
   
   return (
     <div>
@@ -32,6 +41,7 @@ const App = () => {
         <div className={styles.AppPlaylist}>
           <SearchResults
             searchResults={searchResults}
+            onAdd={addTrack}
           />
           <Playlist
             playlistTracks={playlistTracks}

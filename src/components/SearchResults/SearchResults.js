@@ -8,6 +8,7 @@ const SearchResults = (props) => {
           <h2>Results</h2>
           <TrackList
             tracks={props.searchResults}
+            onAdd={props.onAdd}
           />
         </div>
       );

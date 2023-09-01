@@ -1,7 +1,22 @@
-//import React, { useCallback } from "react";
+import React, { useCallback } from "react";
 import styles from "./Track.module.css";
 
 const Track = (props) => {
+  const addTrack = useCallback(
+    (event) => {
+      props.onAdd(props.track);
+    },
+    // eslint-disable-next-line
+    [props.onAdd, props.track]
+  );
+
+  const renderAction = () => {
+      return (
+        <button className="TrackAction" onClick={addTrack}>
+          +
+        </button>
+      )
+    }
 
   return (
       <div className={styles.Track}>
@@ -11,6 +26,7 @@ const Track = (props) => {
             {props.track.artist} | {props.track.album}
           </p>
         </div>
+        {renderAction()}
       </div>
   );
 }
