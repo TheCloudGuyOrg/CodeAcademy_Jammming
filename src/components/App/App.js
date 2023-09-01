@@ -35,12 +35,13 @@ const App = () => {
     );
   }, []);
 
-  // Defining Playlist Name
+  // Defining and Saving Playlist Name
   const [playlistName, setPlaylistName] = useState("New Playlist");
   
   const updatePlaylistName = useCallback((name) => {
     setPlaylistName(name);
   }, [])
+
   
   return (
     <div>
