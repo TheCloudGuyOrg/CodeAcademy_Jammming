@@ -10,13 +10,28 @@ const Track = (props) => {
     [props.onAdd, props.track]
   );
 
+  const removeTrack = useCallback(
+    (event) => {
+      props.onRemove(props.track);
+    },
+    // eslint-disable-next-line
+    [props.onRemove, props.track]
+  );
+
   const renderAction = () => {
+    if (props.isRemoval) {
       return (
-        <button className="TrackAction" onClick={addTrack}>
-          +
+        <button className="TrackAction" onClick={removeTrack}>
+          -
         </button>
-      )
+      );
     }
+    return (
+      <button className="TrackAction" onClick={addTrack}>
+        +
+      </button>
+    )
+  }
 
   return (
       <div className={styles.Track}>

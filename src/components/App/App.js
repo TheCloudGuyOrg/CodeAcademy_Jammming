@@ -28,6 +28,12 @@ const App = () => {
     },
     [playlistTracks]
   )
+
+  const removeTrack = useCallback((track) => {
+    setPlaylistTracks((prevTracks) => 
+      prevTracks.filter((currentTrack) => currentTrack.id !== track.id)
+    );
+  }, []);
   
   return (
     <div>
@@ -45,6 +51,7 @@ const App = () => {
           />
           <Playlist
             playlistTracks={playlistTracks}
+            onRemove={removeTrack}
           />
         </div>
       </div>
