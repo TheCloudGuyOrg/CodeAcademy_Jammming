@@ -1,84 +1,91 @@
-// const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-// const redirectUri = 'http://localhost:3000/';
-// let accessToken;
+const clientId = process.env.REACT_APP_CLIENT_ID;
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
-// const Spotify = {
-//   getAccessToken() {
-//     if (accessToken) {
-//       return accessToken;
-//     }
+export async function redirectToAuthCodeFlow(clientId) {
+  const verifier = generateCodeVerifier(128);
+  const challenge = await generateCodeChallenge(verifier);
 
-//     const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
-//     const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
-//     if (accessTokenMatch && expiresInMatch) {
-//       accessToken = accessTokenMatch[1];
-//       const expiresIn = Number(expiresInMatch[1]);
-//       window.setTimeout(() => accessToken = '', expiresIn * 1000);
-//       window.history.pushState('Access Token', null, '/'); // This clears the parameters, allowing us to grab a new access token when it expires.
-//       return accessToken;
-//     } else {
-//       const accessUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
-//       window.location = accessUrl;
-//     }
-//   },
+  localStorage.setItem("verifier", verifier);
 
-//   search(term) {
-//     const accessToken = Spotify.getAccessToken();
-//     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`
-//       }
-//     }).then(response => {
-//       return response.json();
-//     }).then(jsonResponse => {
-//       if (!jsonResponse.tracks) {
-//         return [];
-//       }
-//       return jsonResponse.tracks.items.map(track => ({
-//         id: track.id,
-//         name: track.name,
-//         artist: track.artists[0].name,
-//         album: track.album.name,
-//         uri: track.uri
-//       }));
-//     });
-//   },
-// }
+  const params = new URLSearchParams();
+  params.append("client_id", clientId);
+  params.append("response_type", "code");
+  params.append("redirect_uri", "http://localhost:3000");
+  params.append("scope", "user-read-private user-read-email playlist-modify-public");
+  params.append("code_challenge_method", "S256");
+  params.append("code_challenge", challenge);
 
-const jsonResponse = [
-  {
-    artist: 'Rutimental',
-    album: '2023 Essential Mix',
-    name: 'Rutimental 2023 Essential Mix',
-    id: '1',
-    uri: 'www.spotify.com/rutimental'
-  },
-  {
-    artist: 'Chase and Status',
-    album: '2021 Essential Mix',
-    name: 'Chase and Status 2021 Essential Mix',
-    id: '2',
-    uri: 'www.spotify.com/chaseandstatus'
-  },
-  {
-    artist: 'Subfocus',
-    album: '2022 Essential Mix',
-    name: 'Subfocus 2022 Essential Mix',
-    id: '3',
-    uri: 'www.spotify.com/subfocus'
+  document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+};
+
+function generateCodeVerifier(length) {
+  let text = '';
+  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-]
+  return text;
+};
+
+async function generateCodeChallenge(codeVerifier) {
+  const data = new TextEncoder().encode(codeVerifier);
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+};
+
+export async function getAccessToken(clientId, code) {
+  const verifier = localStorage.getItem("verifier");
+
+  const params = new URLSearchParams();
+  params.append("client_id", clientId);
+  params.append("grant_type", "authorization_code");
+  params.append("code", code);
+  params.append("redirect_uri", "http://localhost:3000");
+  params.append("code_verifier", verifier);
+
+  const result = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params
+  });
+
+  const { access_token } = await result.json();
+  return access_token;
+};
 
 const Spotify = {
-  search(term) {
-      return jsonResponse.map(track => ({
+  async search(term) {
+    if (!code) {
+      redirectToAuthCodeFlow(clientId);
+    } else {
+      const accessToken = await getAccessToken(clientId, code);
+      
+      return fetch(`https://api.spotify.com/v1/search?query=${term}&type=track&locale=en-US%2Cen%3Bq%3D0.9&offset=0&limit=20`, {
+        method: "GET", 
+        headers: { 
+          Authorization: `Bearer ${accessToken}` 
+        }
+      }).then(response => {
+        return response.json();
+      }).then(jsonResponse => {
+        if (!jsonResponse.tracks) {
+          return [];
+        }
+        return jsonResponse.tracks.items.map(track => ({
           id: track.id,
           name: track.name,
-          artist: track.artist,
-          album: track.album,
+          artist: track.artists[0].name,
+          album: track.album.name,
           uri: track.uri
-      }))
+        }));
+      })
+    }; 
   }
-}
+};
 
 export default Spotify;

@@ -6,14 +6,12 @@ import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import Spotify from "../../util/Spotify";
 
-const sampleTracks = Spotify.search();
-
 const App = () => {
   // Defining Spotify search state
   const [searchResults, setSearchResults] = useState([]);
 
   const search = useCallback((term) => {
-    setSearchResults(sampleTracks)
+    Spotify.search(term).then(setSearchResults);
   }, []);
 
   // Defining playlist tracks state
